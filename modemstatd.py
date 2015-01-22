@@ -103,14 +103,14 @@ def refresh():
 	print 'refresh aborted.'
 	return
     soup = BeautifulSoup(page)
-    tds = soup.findAll("td")
-    rpl1 = float(tds[35].string.split(' ')[0]) # Puissance de reception 0 (-5 / 10 dBmV)
-    rpl2 = float(tds[54].string.split(' ')[0]) # Puissance de reception 1 (-5 / 10 dBmV)
-    rpl3 = float(tds[73].string.split(' ')[0]) # Puissance de reception 2 (-5 / 10 dBmV)
-    snr1 = float(tds[37].string.split(' ')[0]) # SNR canal de reception 0 (>34 dB)
-    snr2 = float(tds[56].string.split(' ')[0]) # SNR canal de reception 1 (>34 dB)
-    snr3 = float(tds[75].string.split(' ')[0]) # SNR canal de reception 2 (>34 dB)
-    tpl  = float(tds[92].string.split(' ')[0]) # Transmit Power Level (44 / 58 dBmV)
+    tables = soup.findAll("table")
+    rpl1 = float(tables[2].findAll("td")[12].string.strip().split(' ')[0]) # Puissance de reception 0 (-5 / 10 dBmV)
+    rpl2 = float(tables[3].findAll("td")[12].string.strip().split(' ')[0]) # Puissance de reception 1 (-5 / 10 dBmV)
+    rpl3 = float(tables[4].findAll("td")[12].string.strip().split(' ')[0]) # Puissance de reception 2 (-5 / 10 dBmV)
+    snr1 = float(tables[2].findAll("td")[14].string.strip().split(' ')[0]) # SNR canal de reception 0 (>34 dB)
+    snr2 = float(tables[3].findAll("td")[14].string.strip().split(' ')[0]) # SNR canal de reception 1 (>34 dB)
+    snr3 = float(tables[4].findAll("td")[14].string.strip().split(' ')[0]) # SNR canal de reception 2 (>34 dB)
+    tpl  = float(tables[5].findAll("td")[12].string.strip().split(' ')[0]) # Transmit Power Level (44 / 58 dBmV)
     #print snr1, snr2, snr3, rpl1, rpl2, rpl3, tpl
     # Prepare the values and cut of the string at the end
     rrdUpdate('modem.rrd', 'N:%f:%f:%f:%f:%f:%f:%f' %(snr1, snr2, snr3, rpl1, rpl2, rpl3, tpl))
